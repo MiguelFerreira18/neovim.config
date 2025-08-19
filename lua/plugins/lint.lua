@@ -1,5 +1,4 @@
-
-return{
+return {
 
   {
     'mfussenegger/nvim-lint',
@@ -40,12 +39,11 @@ return{
       vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
         group = lint_augroup,
         callback = function()
-          if vim.opt_local.modifiable:get() then
+          if vim.bo.modifiable then
             lint.try_lint()
           end
         end,
       })
     end,
   },
-
 }
