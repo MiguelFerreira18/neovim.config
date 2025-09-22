@@ -39,6 +39,22 @@ return {
         filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
       }
       lspconfig.volar.setup {}
+      local project_lib = vim.fn.getcwd() .. '/node_modules'
+
+      lspconfig.angularls.setup {
+        cmd = {
+          'ngserver',
+          '--stdio',
+          '--tsProbeLocations',
+          project_lib,
+          '--ngProbeLocations',
+          project_lib,
+        },
+        filetypes = { 'typescript', 'html', 'typescriptreact', 'typescript.tsx' },
+        root_dir = lspconfig.util.root_pattern('angular.json', 'nx.json', 'package.json'),
+        on_attach = on_attach,
+        capabilities = capabilities,
+      }
 
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
@@ -56,6 +72,7 @@ return {
           map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
           map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+          map('K', vim.lsp.buf.hover, 'Hover Documentation')
 
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
@@ -101,7 +118,6 @@ return {
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
-
       local servers = {
         -- clangd = {},
         -- gopls = {},

@@ -101,6 +101,7 @@ require('lazy').setup({
   require 'plugins.gitsigns',
   require 'plugins.indentlines',
   require 'plugins.typescript_tools',
+  require 'plugins.todo-comments',
 }, {
   ui = {
     icons = vim.g.have_nerd_font and {} or {
