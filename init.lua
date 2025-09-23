@@ -27,6 +27,7 @@ vim.keymap.set('n', '<leader>w', vim.cmd.w, { desc = '[W]rite' })
 vim.keymap.set('n', '<leader>ge', vim.cmd.Ex, { desc = '[G]oto [E]explorer' })
 
 vim.opt.breakindent = true
+vim.opt.smartindent = true
 
 vim.opt.undofile = true
 
@@ -102,6 +103,7 @@ require('lazy').setup({
   require 'plugins.indentlines',
   require 'plugins.typescript_tools',
   require 'plugins.todo-comments',
+  require 'plugins.mini',
 }, {
   ui = {
     icons = vim.g.have_nerd_font and {} or {

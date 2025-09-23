@@ -15,16 +15,18 @@ return {
     dependencies = {
       { 'mason-org/mason.nvim', config = true },
       'williamboman/mason-lspconfig.nvim',
+
       'WhoIsSethDaniel/mason-tool-installer.nvim',
+
       { 'j-hui/fidget.nvim', opts = {} },
-      'hrsh7th/cmp-nvim-lsp',
+      'saghen/blink.cmp',
     },
     config = function()
-      local lspconfig = require 'lspconfig'
       -- If you're wondering about lsp vs treesitter, you can check out the wonderfully
       -- and elegantly composed help section, `:help lsp-vs-treesitter`
 
-      lspconfig.ts_ls.setup {
+      -- Typescript config
+      vim.lsp.config('ts_ls', {
         on_attach = on_attach,
         capabilities = capabilities,
         init_options = {
@@ -37,11 +39,14 @@ return {
           },
         },
         filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
-      }
-      lspconfig.volar.setup {}
+      })
+
+      -- Vue_ls (Vue) config
+      vim.lsp.config('vue_ls', {})
       local project_lib = vim.fn.getcwd() .. '/node_modules'
 
-      lspconfig.angularls.setup {
+      -- Angular config
+      vim.lsp.config('angularls', {
         cmd = {
           'ngserver',
           '--stdio',
@@ -51,10 +56,31 @@ return {
           project_lib,
         },
         filetypes = { 'typescript', 'html', 'typescriptreact', 'typescript.tsx' },
-        root_dir = lspconfig.util.root_pattern('angular.json', 'nx.json', 'package.json'),
+        root_dir = function(fname)
+          return vim.fs.dirname(vim.fs.find({ 'angular.json', 'nx.json', 'package.json' }, { upward = true, path = fname })[1])
+        end,
         on_attach = on_attach,
         capabilities = capabilities,
-      }
+      })
+
+      -- Lua config
+      vim.lsp.config('lua_ls', {
+        capabilities = capabilities,
+        settings = {
+          Lua = {
+            completion = {
+              callSnippet = 'Replace',
+            },
+            -- toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+            -- diagnostics = { disable = { 'missing-fields' } },
+          },
+        },
+      })
+      --Enabling LSP servers with new syntax
+      vim.lsp.enable 'ts_ls'
+      vim.lsp.enable 'vue_ls'
+      vim.lsp.enable 'angularls'
+      vim.lsp.enable 'lua_ls'
 
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
@@ -116,58 +142,19 @@ return {
         vim.diagnostic.config { signs = { text = diagnostic_signs } }
       end
 
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
-      local servers = {
-        -- clangd = {},
-        -- gopls = {},
-        -- pyright = {},
-        -- rust_analyzer = {},
-        -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-        --
-        -- Some languages (like typescript) have entire language plugins that can be useful:
-        --    https://github.com/pmizio/typescript-tools.nvim
-        --
-        -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
-        --
-
-        lua_ls = {
-          -- cmd = {...},
-          -- filetypes = { ...},
-          -- capabilities = {},
-          settings = {
-            Lua = {
-              completion = {
-                callSnippet = 'Replace',
-              },
-              -- toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              -- diagnostics = { disable = { 'missing-fields' } },
-            },
-          },
-        },
-      }
-
       -- Setup Mason first
       require('mason').setup()
-
+      local servers = { 'ts_ls', 'vue_ls', 'angularls', 'lua_ls' }
       -- Setup mason-lspconfig with minimal configuration to avoid automatic_enable issues
       require('mason-lspconfig').setup {
-        ensure_installed = vim.tbl_keys(servers),
+        ensure_installed = servers,
       }
 
       -- Setup mason-tool-installer for additional tools
-      local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {
+      local ensure_installed = vim.list_extend(vim.deepcopy(servers), {
         'stylua',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-
-      -- Manual LSP server setup to avoid automatic_enable conflicts
-      for server_name, server_config in pairs(servers) do
-        server_config.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server_config.capabilities or {})
-        require('lspconfig')[server_name].setup(server_config)
-      end
     end,
   },
 }
