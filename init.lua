@@ -66,6 +66,8 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+vim.keymap.set('n', '<leader>st', ':TodoTelescope<CR>', { desc = '[S]earch [t]odos with Telescope' })
+
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
@@ -104,6 +106,7 @@ require('lazy').setup({
   require 'plugins.typescript_tools',
   require 'plugins.todo-comments',
   require 'plugins.mini',
+  require 'plugins.autotag',
 }, {
   ui = {
     icons = vim.g.have_nerd_font and {} or {
