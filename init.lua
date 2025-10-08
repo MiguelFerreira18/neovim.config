@@ -107,6 +107,7 @@ require('lazy').setup({
   require 'plugins.todo-comments',
   require 'plugins.mini',
   require 'plugins.autotag',
+  require 'plugins.remote-sshfs',
 }, {
   ui = {
     icons = vim.g.have_nerd_font and {} or {

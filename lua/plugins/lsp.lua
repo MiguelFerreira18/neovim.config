@@ -151,6 +151,9 @@ return {
           end,
           capabilities,
         },
+        gopls = {
+          capabilities = capabilities,
+        },
         lua_ls = {
           capabilities = capabilities,
           settings = {
