@@ -1,6 +1,12 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+vim.opt.expandtab = true
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.softtabstop = 2
+vim.opt.smarttab = true
+
 vim.g.have_nerd_font = true
 
 vim.opt.number = true
@@ -25,6 +31,8 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 
 vim.keymap.set('n', '<leader>w', vim.cmd.w, { desc = '[W]rite' })
 vim.keymap.set('n', '<leader>ge', vim.cmd.Ex, { desc = '[G]oto [E]explorer' })
+
+require('bindings').setup()
 
 vim.opt.breakindent = true
 vim.opt.smartindent = true
@@ -108,6 +116,7 @@ require('lazy').setup({
   require 'plugins.mini',
   require 'plugins.autotag',
   require 'plugins.remote-sshfs',
+  require 'plugins.lspsaga',
 }, {
   ui = {
     icons = vim.g.have_nerd_font and {} or {

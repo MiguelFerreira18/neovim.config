@@ -35,6 +35,7 @@ return {
         html = { 'prettier' },
         json = { 'prettier' },
         css = { 'prettier' },
+        markdown = { 'cbfmt', ' markdown-toc', 'markdownlint' },
         -- run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
