@@ -161,6 +161,9 @@ function M.setup()
   map('n', '<leader>ms', ':Markview splitToggle<CR>', { noremap = true, silent = true, desc = '[M]arkview [S]plitview' })
   map('n', '<leader>me', ':Markview Enable<CR>', { noremap = true, silent = true, desc = '[M]arkview [E]nable' })
   map('n', '<leader>md', ':Markview Disable<CR>', { noremap = true, silent = true, desc = '[M]arkview [D]isable' })
+
+  -- quick enter into normal mode
+  map('i', 'jj', '<Esc>', { noremap = true, silent = true })
 end
 
 return M
