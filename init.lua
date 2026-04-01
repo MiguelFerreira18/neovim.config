@@ -117,6 +117,7 @@ require('lazy').setup({
   require 'plugins.autotag',
   --  require 'plugins.remote-sshfs',
   require 'plugins.lspsaga',
+  require 'plugins.ollama',
 }, {
   ui = {
     icons = vim.g.have_nerd_font and {} or {
