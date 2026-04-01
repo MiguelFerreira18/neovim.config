@@ -115,7 +115,7 @@ require('lazy').setup({
   require 'plugins.todo-comments',
   require 'plugins.mini',
   require 'plugins.autotag',
-  require 'plugins.remote-sshfs',
+  --  require 'plugins.remote-sshfs',
   require 'plugins.lspsaga',
 }, {
   ui = {
