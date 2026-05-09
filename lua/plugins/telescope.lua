@@ -1,44 +1,26 @@
-return {
+local function setup()
+  vim.pack.add({
+    'https://github.com/nvim-lua/plenary.nvim',
+    'https://github.com/nvim-telescope/telescope-ui-select.nvim',
+    'https://github.com/nvim-tree/nvim-web-devicons',
+    'https://github.com/nvim-telescope/telescope.nvim',
+  })
 
-  {
-    'nvim-telescope/telescope.nvim',
-    event = 'VimEnter',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      {
-        'nvim-telescope/telescope-fzf-native.nvim',
-        build = 'make',
+  if vim.fn.executable 'make' == 1 then vim.pack.add({'https://github.com/nvim-telescope/telescope-fzf-native.nvim'}) end
 
-        cond = function()
-          return vim.fn.executable 'make' == 1
-        end,
-      },
-      { 'nvim-telescope/telescope-ui-select.nvim' },
-
-      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+  require('telescope').setup({
+    extensions = {
+      ['ui-select'] = { require('telescope.themes').get_dropdown() },
     },
-    config = function()
-      -- [[ Configure Telescope ]]
-      -- See `:help telescope` and `:help telescope.setup()`
-      require('telescope').setup {
-        -- You can put your default mappings / updates / etc. in here
-        --
-        -- defaults = {
-        --   mappings = {
-        --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-        --   },
-        -- },
-        -- pickers = {}
-        extensions = {
-          ['ui-select'] = {
-            require('telescope.themes').get_dropdown(),
-          },
-        },
-      }
-      pcall(require('telescope').load_extension, 'fzf')
-      pcall(require('telescope').load_extension, 'ui-select')
+  })
+  pcall(require('telescope').load_extension, 'fzf')
+  pcall(require('telescope').load_extension, 'ui-select')
+  require('bindings').telescope_binds()
+end
 
-      require('bindings').telescope_binds()
-    end,
-  },
-}
+vim.api.nvim_create_autocmd('VimEnter', {
+  callback = function()
+    setup()
+  end,
+  once = true,
+})

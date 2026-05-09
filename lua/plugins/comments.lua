@@ -1,13 +1,9 @@
-return {
-  {
-    'numToStr/Comment.nvim',
-    opts = {
-      toggler = {
-        line = '<leader>cc', 
-	},
-      opleader = {
-        line = '<leader>cc',
-      },
-    },
+vim.pack.add { 'https://github.com/numToStr/Comment.nvim' }
+require('Comment').setup {
+  toggler = {
+    line = '<leader>cc',
+  },
+  opleader = {
+    line = '<leader>cc',
   },
 }

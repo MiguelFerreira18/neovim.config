@@ -9,6 +9,7 @@ function M.goto_def_in_vsplit()
   vim.cmd 'vsplit' -- open vertical split
   vim.lsp.buf.definition() -- jump to definition
 end
+-- INFO: AUTOCMD
 
 -- INFO: LSPCONFIG
 function M.lspconfig_binds(bufnr)

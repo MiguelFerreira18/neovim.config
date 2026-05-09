@@ -1,10 +1,6 @@
--- For `plugins/markview.lua` users.
-return {
-  {
-    'OXY2DEV/markview.nvim',
-    lazy = false,
-
-    -- Completion for `blink.cmp`
-    dependencies = { 'saghen/blink.cmp' },
-  },
-}
+vim.pack.add({
+  'https://github.com/saghen/blink.lib',
+  'https://github.com/saghen/blink.cmp',
+  'https://github.com/OXY2DEV/markview.nvim',
+})
+require('markview').setup({})

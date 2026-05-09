@@ -1,23 +1,6 @@
-return {
-  {
-    'pmizio/typescript-tools.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
-    opts = {},
-    config = function()
-      require('typescript-tools').setup {
-        on_attach = on_attach,
-        filetypes = {
-          'javascript',
-          'typescript',
-          'vue',
-        },
-        settings = {
-          single_file_support = false,
-          tsserver_plugins = {
-            '@vue/typescript-plugin',
-          },
-        },
-      }
-    end,
-  },
-}
+vim.pack.add({
+  'https://github.com/nvim-lua/plenary.nvim',
+  'https://github.com/neovim/nvim-lspconfig',
+  'https://github.com/pmizio/typescript-tools.nvim',
+})
+require('typescript-tools').setup({})
