@@ -1,8 +1,10 @@
 vim.pack.add({
-  { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' }
+  { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'master' }
 })
+
+
 require('nvim-treesitter.install').compilers = { 'gcc', 'cc', 'clang' }
-require('nvim-treesitter.configs').setup({
+require('nvim-treesitter.config').setup({
   ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'rust', 'go' },
   auto_install = true,
   highlight = {
@@ -11,4 +13,3 @@ require('nvim-treesitter.configs').setup({
   },
   indent = { enable = true, disable = { 'ruby' } },
 })
-

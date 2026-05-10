@@ -64,10 +64,9 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
-vim.api.nvim_set_keymap('n', '<leader>ps', ':Lazy sync<CR>', { noremap = true, silent = true, desc = 'Plugins show' })
-vim.api.nvim_set_keymap('n', '<leader>pS', ':Lazy sync<CR>', { noremap = true, silent = true, desc = 'Plugins Sync' })
-vim.api.nvim_set_keymap('n', '<leader>pi', ':Lazy install<CR>', { noremap = true, silent = true, desc = 'Plugin install' })
-vim.api.nvim_set_keymap('n', '<leader>pa', ':Lazy sync<CR> :MasonUpdate<CR>', { noremap = true, silent = true, desc = 'Update Lazy and Mason' })
+vim.api.nvim_set_keymap('n', '<leader>ps', ':lua vim.pack.update()<CR>', { noremap = true, silent = true, desc = 'Plugins Update' })
+vim.api.nvim_set_keymap('n', '<leader>pS', ':lua vim.pack.update()<CR>', { noremap = true, silent = true, desc = 'Plugins Sync' })
+vim.api.nvim_set_keymap('n', '<leader>pa', ':lua vim.pack.update()<CR> :MasonUpdate<CR>', { noremap = true, silent = true, desc = 'Update Plugins and Mason' })
 
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
@@ -84,58 +83,28 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
-local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
-  local out = vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
-  if vim.v.shell_error ~= 0 then
-    error('Error cloning lazy.nvim:\n' .. out)
-  end
-end ---@diagnostic disable-next-line: undefined-field
-vim.opt.rtp:prepend(lazypath)
-
-require('lazy').setup({
-  require 'plugins.lsp',
-  require 'plugins.treesitter',
-  require 'plugins.whichkey',
-  require 'plugins.lint',
-  require 'plugins.lualine',
-  require 'plugins.nvimcmp',
-  require 'plugins.telescope',
-  require 'plugins.theme',
-  require 'plugins.toggleterm',
-  require 'plugins.autopairs',
-  require 'plugins.comments',
-  require 'plugins.conform',
-  require 'plugins.discordpresence',
-  require 'plugins.gitblame',
-  require 'plugins.gitsigns',
-  require 'plugins.indentlines',
-  require 'plugins.typescript_tools',
-  require 'plugins.todo-comments',
-  require 'plugins.mini',
-  require 'plugins.autotag',
-  --  require 'plugins.remote-sshfs',
-  require 'plugins.lspsaga',
-  require 'plugins.ollama',
-}, {
-  ui = {
-    icons = vim.g.have_nerd_font and {} or {
-      cmd = '⌘',
-      config = '🛠',
-      event = '📅',
-      ft = '📂',
-      init = '⚙',
-      keys = '🗝',
-      plugin = '🔌',
-      runtime = '💻',
-      require = '🌙',
-      source = '📄',
-      start = '🚀',
-      task = '📌',
-      lazy = '💤 ',
-    },
-  },
-})
+-- Load plugins using the built-in pack system (Neovim 0.12+)
+require 'plugins.theme'
+require 'plugins.lsp'
+require 'plugins.treesitter'
+require 'plugins.whichkey'
+require 'plugins.lint'
+require 'plugins.lualine'
+require 'plugins.nvimcmp'
+require 'plugins.telescope'
+require 'plugins.toggleterm'
+require 'plugins.autopairs'
+require 'plugins.comments'
+require 'plugins.conform'
+require 'plugins.discordpresence'
+require 'plugins.gitblame'
+require 'plugins.gitsigns'
+require 'plugins.indentlines'
+require 'plugins.typescript_tools'
+require 'plugins.todo-comments'
+require 'plugins.mini'
+require 'plugins.autotag'
+require 'plugins.lspsaga'
+require 'plugins.ollama'
 
 -- vim: ts=2 sts=2 sw=2 et
